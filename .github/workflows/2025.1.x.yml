@@ -14,6 +14,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest ]
+        spring-cloud-version: [ 2025.1.0, 2025.1.1 ]
+        spring-boot-version: [ 4.0.0, 4.0.1, 4.0.2, 4.0.3, 4.0.4, 4.0.5, 4.0.6, 4.0.7 ]
     env:
       BRANCH: 2025.1.x
     steps:
@@ -21,7 +23,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: '21'
-          distribution: 'adopt'
+          distribution: 'temurin'
       - name: Dependencies Cache
         uses: actions/cache@v5
         with:
@@ -36,12 +38,12 @@ jobs:
         run: ./mvnw -version
       - name: Compile & Checkstyle
         working-directory: spring-cloud-alibaba
-        run: ./mvnw clean -B -T 1C compile
+        run: ./mvnw clean -B -T 1C compile -Dspring-boot.version=${{ matrix.spring-boot-version }} -Dspring.cloud.version=${{ matrix.spring-cloud-version }}
       - name: install dependencies
         working-directory: spring-cloud-alibaba
-        run: ./mvnw clean -B -T 1C install -U package -pl '!spring-cloud-alibaba-coverage'  -DskipTests
+        run: ./mvnw -B -T 1C install -U package -pl '!spring-cloud-alibaba-coverage' -DskipTests -Dspring-boot.version=${{ matrix.spring-boot-version }} -Dspring.cloud.version=${{ matrix.spring-cloud-version }}
       - name: Testing
         working-directory: spring-cloud-alibaba
-        run: ./mvnw verify -B -T 1C -Dmaven.test.skip=false
+        run: ./mvnw verify -B -T 1C -Dmaven.test.skip=false -Dspring-boot.version=${{ matrix.spring-boot-version }} -Dspring.cloud.version=${{ matrix.spring-cloud-version }}
       - name: Delete snapshots from the Maven local repository
         run: find ~/.m2/repository -type d -name '*-SNAPSHOT' -print -exec rm -r {} +
