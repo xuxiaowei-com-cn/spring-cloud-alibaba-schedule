@@ -15,6 +15,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest ]
         spring-cloud-version: [ 2025.1.0, 2025.1.1 ]
+        spring-cloud-build-version: [ 5.0.0, 5.0.1 ]
         spring-boot-version: [ 4.0.0, 4.0.1, 4.0.2, 4.0.3, 4.0.4, 4.0.5, 4.0.6, 4.0.7 ]
     env:
       BRANCH: 2025.1.x
@@ -36,6 +37,11 @@ jobs:
       - name: Print Maven version
         working-directory: spring-cloud-alibaba
         run: ./mvnw -version
+      - name: Set spring-cloud-build version
+        working-directory: spring-cloud-alibaba
+        run: |
+          sed -i "s#<version>5.0.0</version>#<version>${{ matrix.spring-cloud-build-version }}</version>#" pom.xml
+          sed -i "s#<version>5.0.0</version>#<version>${{ matrix.spring-cloud-build-version }}</version>#" spring-cloud-alibaba-dependencies/pom.xml
       - name: Compile & Checkstyle
         working-directory: spring-cloud-alibaba
         run: ./mvnw clean -B -T 1C compile -Dspring-boot.version=${{ matrix.spring-boot-version }} -Dspring.cloud.version=${{ matrix.spring-cloud-version }}
