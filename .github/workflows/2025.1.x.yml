@@ -2,8 +2,12 @@ name: 2025.1.x
 on:
   push:
     branches: [ main, xuxiaowei/* ]
+    paths:
+      - '.github/workflows/2025.1.x.yml'
   pull_request:
     branches: [ main ]
+    paths:
+      - '.github/workflows/2025.1.x.yml'
   schedule:
     - cron: '0 0 * * *'
 
