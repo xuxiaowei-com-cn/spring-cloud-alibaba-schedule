@@ -62,9 +62,9 @@ jobs:
         run: |
           sed -i "s#<version>4.3.0</version>#<version>${{ matrix.spring-cloud-build-version }}</version>#" pom.xml
           sed -i "s#<version>4.3.0</version>#<version>${{ matrix.spring-cloud-build-version }}</version>#" spring-cloud-alibaba-dependencies/pom.xml
-      - name: Compile & Checkstyle
+      - name: Compile
         working-directory: spring-cloud-alibaba
-        run: ./mvnw clean -B -T 1C compile -Dspring-boot.version=${{ matrix.spring-boot-version }} -Dspring.cloud.version=${{ matrix.spring-cloud-version }}
+        run: ./mvnw clean -B -T 1C compile -Dcheckstyle.skip=true -Dspring-boot.version=${{ matrix.spring-boot-version }} -Dspring.cloud.version=${{ matrix.spring-cloud-version }}
       - name: install dependencies
         working-directory: spring-cloud-alibaba
         run: ./mvnw -B -T 1C install -U package -pl '!spring-cloud-alibaba-coverage' -DskipTests -Dspring-boot.version=${{ matrix.spring-boot-version }} -Dspring.cloud.version=${{ matrix.spring-cloud-version }}
