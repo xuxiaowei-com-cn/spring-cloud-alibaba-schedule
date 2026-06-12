@@ -21,6 +21,13 @@ jobs:
         spring-cloud-version: [ 2025.1.0, 2025.1.1, 2025.1.2 ]
         spring-cloud-build-version: [ 5.0.0, 5.0.1, 5.0.2 ]
         spring-boot-version: [ 4.0.0, 4.0.1, 4.0.2, 4.0.3, 4.0.4, 4.0.5, 4.0.6, 4.0.7, 4.1.0 ]
+        exclude:
+          # Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.cloud.configuration.CompositeCompatibilityVerifier]: Factory method 'compositeCompatibilityVerifier' threw exception with message: Spring Cloud/ Spring Boot version compatibility checks have failed: [[VerificationResult@6cc8adff description = 'Spring Boot [4.1.0] is not compatible with this Spring Cloud release train', action = 'Change Spring Boot version to one of the following versions [4.0.x] .
+          # Caused by: org.springframework.cloud.configuration.CompatibilityNotMetException: Spring Cloud/ Spring Boot version compatibility checks have failed: [[VerificationResult@6cc8adff description = 'Spring Boot [4.1.0] is not compatible with this Spring Cloud release train', action = 'Change Spring Boot version to one of the following versions [4.0.x] .
+          - spring-cloud-version: 2025.1.0
+            spring-boot-version: 4.1.0
+          - spring-cloud-version: 2025.1.1
+            spring-boot-version: 4.1.0
     env:
       BRANCH: 2025.1.x
     steps:
